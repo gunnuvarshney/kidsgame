@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kids Learning World 🌟</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Comic Sans MS','Chalkboard SE',cursive;background:#1a1a2e;color:#fff;overflow-x:hidden;height:100vh;}
+
+/* ===== FLOATING CARTOONS BG ===== */
+.cartoon-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.ct{position:absolute;font-size:2em;animation:ctFloat linear infinite;opacity:0.18;user-select:none;}
+@keyframes ctFloat{0%{transform:translateY(110vh) rotate(0deg);opacity:0;}10%{opacity:.18;}90%{opacity:.18;}100%{transform:translateY(-10vh) rotate(360deg);opacity:0;}}
+
+/* ===== SPLASH ===== */
+#splash{position:fixed;inset:0;z-index:999;background:linear-gradient(160deg,#0f0c29,#302b63,#24243e);display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
+.sp-stars{position:absolute;inset:0;pointer-events:none;}
+.sp-star{position:absolute;border-radius:50%;background:#fff;animation:spT 2s infinite alternate;}
+@keyframes spT{from{opacity:.2;transform:scale(1)}to{opacity:1;transform:scale(1.5)}}
+.sp-planet-wrap{position:relative;margin-bottom:8px;}
+.sp-planet{width:115px;height:115px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#f9e79f,#f39c12,#e67e22);box-shadow:0 0 60px rgba(249,231,159,.7);animation:float 3s ease-in-out infinite;position:relative;z-index:2;display:flex;align-items:center;justify-content:center;font-size:52px;}
+.sp-ring{width:170px;height:34px;border-radius:50%;border:8px solid rgba(249,231,159,.4);position:absolute;top:40px;left:-28px;animation:float 3s ease-in-out infinite;z-index:1;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.sp-chars-row{display:flex;gap:7px;margin:5px 0 7px;}
+.sp-char{font-size:2em;animation:wgl 1.5s ease-in-out infinite;}
+.sp-char:nth-child(2){animation-delay:.15s}.sp-char:nth-child(3){animation-delay:.3s}
+.sp-char:nth-child(4){animation-delay:.45s}.sp-char:nth-child(5){animation-delay:.6s}
+.sp-char:nth-child(6){animation-delay:.75s}.sp-char:nth-child(7){animation-delay:.9s}
+@keyframes wgl{0%,100%{transform:rotate(-10deg) scale(1)}50%{transform:rotate(10deg) scale(1.12)}}
+.sp-title{font-size:2.1em;font-weight:bold;text-align:center;color:#f9e79f;text-shadow:0 0 30px rgba(249,231,159,.8),3px 3px 0 #e74c3c;animation:pulse 2s ease-in-out infinite;line-height:1.2;}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+.sp-sub{color:#abebc6;font-size:.82em;margin-top:3px;text-align:center;}
+.load-wrap{width:240px;margin-top:10px;}
+.load-label{font-size:.74em;color:#abebc6;margin-bottom:5px;text-align:center;}
+.load-bar{width:100%;height:13px;background:rgba(255,255,255,.15);border-radius:30px;overflow:hidden;border:2px solid rgba(249,231,159,.3);}
+.load-fill{height:100%;width:0;background:linear-gradient(90deg,#f39c12,#f9e79f,#e74c3c);border-radius:30px;transition:width .28s ease;}
+.load-pct{text-align:center;color:#f9e79f;font-size:.8em;margin-top:4px;}
+.play-btn{display:none;margin-top:13px;padding:13px 38px;border:none;border-radius:50px;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;font-family:inherit;font-size:1.1em;font-weight:bold;cursor:pointer;box-shadow:0 8px 25px rgba(231,76,60,.5);animation:popIn .5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{transform:scale(0) rotate(-10deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+
+/* ===== HOME ===== */
+#homeScreen{display:none;flex-direction:column;height:100vh;overflow:hidden;position:relative;z-index:1;}
+.home-header{background:linear-gradient(135deg,#6c3483,#1a5276);padding:10px 14px 8px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 20px rgba(0,0,0,.5);position:relative;z-index:2;}
+.home-title{font-size:1.1em;color:#f9e79f;text-shadow:2px 2px 0 #e74c3c;}
+.hdr-icons{display:flex;gap:7px;}
+.icon-btn{background:rgba(255,255,255,.15);border:1.5px solid rgba(249,231,159,.3);border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1em;transition:all .2s;flex-shrink:0;}
+.icon-btn:active{transform:scale(.88);}
+.home-body{flex:1;overflow-y:auto;padding:12px;position:relative;z-index:1;}
+.home-welcome{text-align:center;margin-bottom:12px;}
+.home-welcome h2{font-size:1.25em;color:#f9e79f;margin-bottom:2px;}
+.home-welcome p{font-size:.78em;color:#abebc6;}
+.hs-pills{display:flex;gap:7px;margin-bottom:12px;justify-content:center;flex-wrap:wrap;}
+.hs-pill{background:rgba(255,255,255,.12);border-radius:20px;padding:4px 12px;font-size:.78em;border:1.5px solid rgba(249,231,159,.35);cursor:pointer;}
+.hs-pill span{color:#f9e79f;font-weight:bold;}
+.menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;}
+.menu-card{border-radius:18px;padding:18px 10px;text-align:center;cursor:pointer;transition:all .22s;border:2.5px solid rgba(255,255,255,.2);display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;overflow:hidden;}
+.menu-card::before{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:background .2s;}
+.menu-card:active::before{background:rgba(255,255,255,.1);}
+.menu-card:active{transform:scale(.94);}
+.mc-icon{font-size:2.5em;filter:drop-shadow(0 3px 6px rgba(0,0,0,.4));}
+.mc-title{font-size:.93em;font-weight:bold;color:#fff;}
+.mc-desc{font-size:.63em;color:rgba(255,255,255,.72);line-height:1.3;}
+.mc-abc{background:linear-gradient(135deg,#c0392b,#e74c3c);}
+.mc-num{background:linear-gradient(135deg,#1a5276,#3498db);}
+.mc-poem{background:linear-gradient(135deg,#1e8449,#27ae60);}
+.mc-quiz{background:linear-gradient(135deg,#784212,#e67e22);}
+.mc-col{background:linear-gradient(135deg,#6c3483,#9b59b6);}
+.mc-hin{background:linear-gradient(135deg,#b7950b,#f39c12);}
+.mc-chat{background:linear-gradient(135deg,#117a65,#1abc9c);}
+.mc-str{background:linear-gradient(135deg,#922b21,#c0392b);}
+
+/* ===== APP ===== */
+#app{display:none;flex-direction:column;height:100vh;overflow:hidden;position:relative;z-index:1;}
+.app-header{background:linear-gradient(135deg,#6c3483,#1a5276);padding:9px 10px 7px;box-shadow:0 4px 20px rgba(0,0,0,.5);display:flex;align-items:center;gap:7px;position:relative;z-index:2;}
+.back-btn{background:rgba(255,255,255,.15);border:1.5px solid rgba(249,231,159,.3);border-radius:50%;width:34px;height:34px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.95em;flex-shrink:0;transition:all .2s;}
+.back-btn:active{transform:scale(.88);}
+.header-title{font-size:.95em;color:#f9e79f;text-shadow:2px 2px 0 #e74c3c;flex:1;text-align:center;}
+.score-pills{display:flex;gap:4px;flex-shrink:0;}
+.pill{background:rgba(255,255,255,.15);border-radius:20px;padding:3px 7px;font-size:.68em;border:1.5px solid #f9e79f;}
+.pill span{color:#f9e79f;}
+.content{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 0 20px;position:relative;z-index:1;}
+.section{display:none;padding:13px;max-width:720px;margin:0 auto;}
+.section.active{display:block;}
+.sec-title{text-align:center;font-size:1.3em;color:#f9e79f;margin-bottom:12px;text-shadow:2px 2px 0 rgba(0,0,0,.5);}
+.enc-bar{background:rgba(255,255,255,.08);border:1.5px solid rgba(249,231,159,.25);border-radius:12px;padding:8px 12px;margin-bottom:11px;font-size:.8em;color:#f9e79f;text-align:center;}
+
+/* ABC */
+.abc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:8px;}
+.lcard{background:linear-gradient(135deg,#c0392b,#e74c3c);border-radius:14px;padding:11px 6px;text-align:center;cursor:pointer;transition:transform .15s;border:2px solid rgba(255,255,255,.3);}
+.lcard:active{transform:scale(.9);}
+.lcard .bl{font-size:1.65em;font-weight:bold;}
+.lcard .le{font-size:1.05em;}
+.lcard .lw{font-size:.58em;color:#ffeaa7;margin-top:2px;}
+
+/* Numbers */
+.num-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));gap:8px;}
+.ncard{background:linear-gradient(135deg,#1a5276,#3498db);border-radius:14px;padding:12px 6px;text-align:center;cursor:pointer;transition:transform .15s;border:2px solid rgba(255,255,255,.3);}
+.ncard:active{transform:scale(.9);}
+.ncard .bn{font-size:1.9em;font-weight:bold;color:#f9e79f;}
+.ncard .nd{font-size:.82em;margin:2px 0;}
+.ncard .nw{font-size:.66em;color:#aed6f1;}
+
+/* Poems */
+.poem-sel{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px;margin-bottom:11px;scrollbar-width:none;}
+.poem-sel::-webkit-scrollbar{display:none;}
+.pbtn{flex-shrink:0;padding:6px 12px;border:none;border-radius:16px;background:#27ae60;color:#fff;cursor:pointer;font-family:inherit;font-size:.78em;}
+.pbtn.active{background:#f9e79f;color:#1a1a2e;}
+.poem-box{background:rgba(255,255,255,.1);border-radius:15px;padding:15px;border:2px solid #27ae60;}
+.poem-box h3{color:#f9e79f;font-size:1.05em;margin-bottom:9px;text-align:center;}
+.poem-box p{line-height:2;font-size:.88em;color:#d5f5e3;white-space:pre-line;}
+.speak-btn{display:block;margin:10px auto 0;padding:8px 18px;background:#e74c3c;color:#fff;border:none;border-radius:16px;font-family:inherit;font-size:.86em;cursor:pointer;}
+
+/* Quiz */
+.quiz-box{background:rgba(255,255,255,.08);border-radius:15px;padding:16px;border:2px solid #f39c12;}
+.quiz-q{font-size:1.05em;color:#f9e79f;text-align:center;margin-bottom:12px;min-height:48px;line-height:1.4;}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.qopt{padding:10px 6px;border:2px solid rgba(255,255,255,.15);border-radius:12px;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;font-family:inherit;font-size:.9em;transition:all .18s;}
+.qopt:active{transform:scale(.95);}
+.qopt.correct{background:#27ae60;border-color:#2ecc71;}
+.qopt.wrong{background:#e74c3c;border-color:#c0392b;}
+.quiz-fb{text-align:center;font-size:.95em;margin:9px 0;min-height:30px;}
+.next-btn{display:block;margin:6px auto;padding:8px 22px;background:#f39c12;color:#fff;border:none;border-radius:16px;font-family:inherit;font-size:.86em;cursor:pointer;}
+
+/* Colors */
+.col-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(95px,1fr));gap:9px;}
+.ccard{border-radius:15px;padding:14px 7px;text-align:center;cursor:pointer;transition:transform .15s;border:3px solid rgba(255,255,255,.35);}
+.ccard:active{transform:scale(.9);}
+.cc-circle{width:48px;height:48px;border-radius:50%;margin:0 auto;border:3px solid rgba(255,255,255,.6);}
+.cc-name{font-size:.88em;font-weight:bold;color:#fff;text-shadow:1px 1px 3px rgba(0,0,0,.6);margin-top:6px;}
+
+/* Hindi */
+.hin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;flex-wrap:wrap;gap:7px;}
+.hin-poems-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:8px;margin-bottom:13px;}
+.hpcard{background:rgba(255,255,255,.07);border-radius:14px;padding:11px 9px;cursor:pointer;transition:transform .15s;border:2px solid rgba(255,255,255,.15);text-align:center;}
+.hpcard:active{transform:scale(.94);}
+.hpcard-num{font-size:.62em;color:rgba(255,255,255,.38);margin-bottom:2px;}
+.hpcard-title{font-size:.78em;color:#f9e79f;font-weight:bold;line-height:1.3;}
+.hpcard-badge{display:inline-block;padding:2px 6px;border-radius:10px;font-size:.58em;margin-top:3px;background:rgba(243,156,18,.3);color:#f39c12;}
+.hin-view{background:rgba(255,255,255,.07);border-radius:16px;padding:16px;border:2px solid rgba(249,231,159,.3);}
+.hin-view-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:11px;gap:7px;}
+.hin-meta h3{font-size:1.1em;color:#f9e79f;margin-bottom:3px;}
+.hin-poem-text{font-size:1.05em;line-height:2.3;color:#fff;white-space:pre-line;text-align:center;font-family:'Noto Sans Devanagari','Arial Unicode MS',sans-serif;margin-bottom:13px;background:rgba(0,0,0,.2);border-radius:12px;padding:13px;}
+.hin-meaning{font-size:.8em;color:#abebc6;line-height:1.8;border-top:1px solid rgba(255,255,255,.1);padding-top:9px;margin-bottom:9px;}
+.hin-actions{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;}
+.ha-btn{padding:7px 14px;border:none;border-radius:13px;font-family:inherit;font-size:.8em;cursor:pointer;transition:transform .15s;font-weight:bold;}
+.ha-btn:active{transform:scale(.93);}
+.pn-row{display:flex;justify-content:space-between;margin-top:9px;}
+.pn-btn{padding:6px 16px;border:none;border-radius:13px;background:rgba(255,255,255,.1);color:#fff;font-family:inherit;font-size:.8em;cursor:pointer;border:1.5px solid rgba(255,255,255,.2);}
+.no-poems{text-align:center;color:rgba(255,255,255,.4);padding:28px;font-size:.88em;}
+
+/* Chat */
+.chat-intro{background:rgba(255,255,255,.08);border-radius:12px;padding:10px;margin-bottom:10px;color:#abebc6;text-align:center;font-size:.85em;}
+.chat-msgs{background:rgba(0,0,0,.25);border-radius:12px;padding:10px;height:260px;overflow-y:auto;margin-bottom:8px;}
+.msg{margin-bottom:8px;display:flex;gap:6px;align-items:flex-end;}
+.msg.user{flex-direction:row-reverse;}
+.mbubble{max-width:78%;padding:8px 12px;border-radius:15px;font-size:.84em;line-height:1.5;}
+.msg.ai .mbubble{background:linear-gradient(135deg,#1abc9c,#27ae60);border-bottom-left-radius:3px;}
+.msg.user .mbubble{background:linear-gradient(135deg,#8e44ad,#9b59b6);border-bottom-right-radius:3px;}
+.mavatar{font-size:1.15em;}
+.chat-row{display:flex;gap:6px;}
+.cinput{flex:1;padding:9px 12px;border-radius:22px;border:2px solid #1abc9c;background:rgba(255,255,255,.1);color:#fff;font-family:inherit;font-size:.84em;outline:none;}
+.cinput::placeholder{color:rgba(255,255,255,.4);}
+.csend{padding:9px 14px;border:none;border-radius:22px;background:#1abc9c;color:#fff;cursor:pointer;font-family:inherit;}
+
+/* Streak */
+.str-panel{background:rgba(255,255,255,.07);border-radius:15px;padding:13px;border:2px solid rgba(243,156,18,.4);margin-bottom:12px;}
+.str-head{display:flex;align-items:center;gap:9px;margin-bottom:10px;}
+.str-fire{font-size:1.8em;animation:fireA 1s ease-in-out infinite alternate;}
+@keyframes fireA{from{transform:scale(1) rotate(-5deg)}to{transform:scale(1.15) rotate(5deg)}}
+.str-info h3{font-size:1em;color:#f9e79f;}
+.str-info p{font-size:.76em;color:#abebc6;}
+.str-days{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:7px;}
+.str-day{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.sdc{width:30px;height:30px;border-radius:50%;border:2px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:.62em;transition:all .3s;}
+.sdc.done{background:linear-gradient(135deg,#f39c12,#e67e22);border-color:#f9e79f;box-shadow:0 0 10px rgba(243,156,18,.5);}
+.sdc.today{border-color:#1abc9c;animation:todayP 1.5s ease-in-out infinite;}
+@keyframes todayP{0%,100%{box-shadow:0 0 0 0 rgba(26,188,156,.5)}50%{box-shadow:0 0 0 6px rgba(26,188,156,0)}}
+.sdl{font-size:.53em;color:rgba(255,255,255,.5);}
+.milestones{display:flex;gap:6px;flex-wrap:wrap;}
+.ms{padding:4px 8px;border-radius:18px;font-size:.68em;border:1.5px solid rgba(255,255,255,.2);display:flex;align-items:center;gap:2px;}
+.ms.earned{background:rgba(243,156,18,.3);border-color:#f39c12;color:#f9e79f;}
+.ms.locked{color:rgba(255,255,255,.4);}
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.stat-box{background:rgba(255,255,255,.07);border-radius:11px;padding:10px;text-align:center;}
+.stat-n{font-size:1.65em;color:#f9e79f;}
+.stat-l{font-size:.68em;color:#abebc6;}
+
+/* Settings */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:300;display:none;align-items:flex-end;justify-content:center;}
+.modal-bg.show{display:flex;}
+.set-panel{background:linear-gradient(160deg,#1a1a2e,#2c3e50);border-radius:22px 22px 0 0;padding:18px 16px 28px;width:100%;max-width:420px;border-top:2px solid rgba(249,231,159,.3);animation:slideUp .3s ease;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.sp-handle{width:38px;height:4px;background:rgba(255,255,255,.3);border-radius:4px;margin:0 auto 14px;}
+.sp-ttl{font-size:1.05em;color:#f9e79f;margin-bottom:14px;text-align:center;}
+.set-row{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+.set-row:last-child{border-bottom:none;}
+.sr-left{display:flex;align-items:center;gap:9px;}
+.sri{font-size:1.2em;}
+.sri-info h4{font-size:.88em;color:#fff;}
+.sri-info p{font-size:.68em;color:rgba(255,255,255,.5);}
+.toggle{width:44px;height:22px;background:#555;border-radius:11px;position:relative;cursor:pointer;transition:background .3s;flex-shrink:0;}
+.toggle.on{background:#27ae60;}
+.toggle::after{content:'';position:absolute;width:18px;height:18px;background:#fff;border-radius:50%;top:2px;left:2px;transition:left .3s;box-shadow:0 2px 4px rgba(0,0,0,.3);}
+.toggle.on::after{left:24px;}
+.vol-sl{width:100px;-webkit-appearance:none;appearance:none;height:5px;border-radius:3px;background:rgba(255,255,255,.2);outline:none;}
+.vol-sl::-webkit-slider-thumb{-webkit-appearance:none;width:17px;height:17px;border-radius:50%;background:#f9e79f;cursor:pointer;}
+
+/* Popup */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:350;display:none;}
+.overlay.show{display:block;}
+.popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);background:linear-gradient(135deg,#1a1a2e,#2c3e50);border:2px solid #f9e79f;border-radius:22px;padding:20px 14px;text-align:center;z-index:400;transition:transform .3s cubic-bezier(.34,1.56,.64,1);width:84%;max-width:300px;}
+.popup.show{transform:translate(-50%,-50%) scale(1);}
+.pop-em{font-size:2.4em;}
+.pop-ti{font-size:1.25em;color:#f9e79f;margin:5px 0;}
+.pop-su{color:#abebc6;margin-bottom:11px;font-size:.83em;line-height:1.5;}
+.pop-ok{padding:7px 20px;background:#e74c3c;border:none;border-radius:16px;color:#fff;cursor:pointer;font-family:inherit;font-size:.86em;}
+</style>
+</head>
+<body>
+
+<!-- CARTOON BACKGROUND -->
+<div class="cartoon-bg" id="ctBg"></div>
+
+<!-- SPLASH -->
+<div id="splash">
+  <div class="sp-stars" id="spStars"></div>
+  <div class="sp-planet-wrap">
+    <div class="sp-planet">😊</div>
+    <div class="sp-ring"></div>
+  </div>
+  <div class="sp-chars-row">
+    <span class="sp-char">🐶</span><span class="sp-char">🦁</span><span class="sp-char">🐸</span>
+    <span class="sp-char">🐙</span><span class="sp-char">🦋</span><span class="sp-char">🐼</span>
+    <span class="sp-char">🦄</span>
+  </div>
+  <div class="sp-title">🌟 Kids Learning<br>World 🌟</div>
+  <div class="sp-sub">Learn • Sing • Play • हिंदी</div>
+  <div class="load-wrap">
+    <div class="load-label" id="loadLabel">Getting things ready...</div>
+    <div class="load-bar"><div class="load-fill" id="loadFill"></div></div>
+    <div class="load-pct" id="loadPct">0%</div>
+  </div>
+  <button class="play-btn" id="playBtn" onclick="onPlayBtn()">🚀 Let's Play!</button>
+</div>
+
+<!-- HOME -->
+<div id="homeScreen">
+  <div class="home-header">
+    <div class="home-title">🌟 Learning World</div>
+    <div class="hdr-icons">
+      <div class="icon-btn" id="muteHomeBtn" onclick="toggleMute()">🔊</div>
+      <div class="icon-btn" onclick="openSettings()">⚙️</div>
+    </div>
+  </div>
+  <div class="home-body">
+    <div class="home-welcome"><h2>👋 Hello, Superstar!</h2><p>What would you like to learn today? 🌈</p></div>
+    <div class="hs-pills">
+      <div class="hs-pill">⭐ Stars: <span id="hStars">0</span></div>
+      <div class="hs-pill">🏆 Score: <span id="hScore">0</span></div>
+      <div class="hs-pill" onclick="openSection('streak')">🔥 Streak: <span id="hStreak">0</span>d</div>
+    </div>
+    <div class="menu-grid">
+      <div class="menu-card mc-abc" onclick="openSection('abc')"><div class="mc-icon">🔤</div><div class="mc-title">Alphabets</div><div class="mc-desc">Learn A to Z with fun sounds!</div></div>
+      <div class="menu-card mc-num" onclick="openSection('num')"><div class="mc-icon">🔢</div><div class="mc-title">Numbers</div><div class="mc-desc">Count 1 to 20 with stars!</div></div>
+      <div class="menu-card mc-poem" onclick="openSection('poem')"><div class="mc-icon">📜</div><div class="mc-title">English Poems</div><div class="mc-desc">Fun rhymes read aloud!</div></div>
+      <div class="menu-card mc-quiz" onclick="openSection('quiz')"><div class="mc-icon">🧠</div><div class="mc-title">Quiz Time</div><div class="mc-desc">Test & win stars! 🏆</div></div>
+      <div class="menu-card mc-col" onclick="openSection('colors')"><div class="mc-icon">🎨</div><div class="mc-title">Colors</div><div class="mc-desc">Learn beautiful colors!</div></div>
+      <div class="menu-card mc-hin" onclick="openSection('hindi')"><div class="mc-icon">🇮🇳</div><div class="mc-title">हिंदी कविताएँ</div><div class="mc-desc">15 fun Hindi poems!</div></div>
+      <div class="menu-card mc-chat" onclick="openSection('chat')"><div class="mc-icon">🤖</div><div class="mc-title">AI Buddy</div><div class="mc-desc">Ask me anything! 😊</div></div>
+      <div class="menu-card mc-str" onclick="openSection('streak')"><div class="mc-icon">🔥</div><div class="mc-title">My Streak</div><div class="mc-desc">Keep your fire going!</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="app-header">
+    <div class="back-btn" onclick="goBackHome()">🏠</div>
+    <div class="header-title" id="appTitle">Learning World</div>
+    <div class="score-pills">
+      <div class="pill">⭐<span id="starCount">0</span></div>
+      <div class="pill">🏆<span id="scoreCount">0</span></div>
+    </div>
+    <div class="icon-btn" id="muteAppBtn" onclick="toggleMute()" style="width:32px;height:32px;font-size:.88em;">🔊</div>
+    <div class="icon-btn" onclick="openSettings()" style="width:32px;height:32px;font-size:.88em;">⚙️</div>
+  </div>
+  <div class="content" id="content">
+
+    <!-- ABC -->
+    <div class="section" id="sec-abc">
+      <div class="sec-title">🔤 Learn the Alphabet!</div>
+      <div class="enc-bar" id="encAbc">🌟 Tap any letter to hear it!</div>
+      <div class="abc-grid" id="abcGrid"></div>
+    </div>
+
+    <!-- Numbers -->
+    <div class="section" id="sec-num">
+      <div class="sec-title">🔢 Count with Me!</div>
+      <div class="enc-bar">⭐ Tap each number to hear its name!</div>
+      <div class="num-grid" id="numGrid"></div>
+    </div>
+
+    <!-- Poems -->
+    <div class="section" id="sec-poem">
+      <div class="sec-title">📜 English Poems!</div>
+      <div class="poem-sel" id="poemSel"></div>
+      <div class="poem-box"><h3 id="poemTitle"></h3><p id="poemText"></p><button class="speak-btn" onclick="speakPoem()">🔊 Read Aloud</button></div>
+    </div>
+
+    <!-- Quiz -->
+    <div class="section" id="sec-quiz">
+      <div class="sec-title">🧠 Quiz Time!</div>
+      <div class="quiz-box">
+        <div class="quiz-q" id="quizQ">Tap Next to start! 🎯</div>
+        <div class="quiz-opts" id="quizOpts"></div>
+        <div class="quiz-fb" id="quizFb"></div>
+        <button class="next-btn" onclick="nextQ()">▶ Next Question</button>
+      </div>
+    </div>
+
+    <!-- Colors -->
+    <div class="section" id="sec-colors">
+      <div class="sec-title">🎨 Learn Colors!</div>
+      <div class="enc-bar">🎨 Tap a color to hear its name!</div>
+      <div class="col-grid" id="colGrid"></div>
+    </div>
+
+    <!-- Hindi -->
+    <div class="section" id="sec-hindi">
+      <div class="sec-title">🇮🇳 हिंदी कविताएँ</div>
+      <div class="enc-bar">🇮🇳 Tap any poem to read and listen!</div>
+      <div class="hin-poems-grid" id="hinGrid"></div>
+      <div class="hin-view" id="hinView" style="display:none">
+        <div class="hin-view-top">
+          <div class="hin-meta"><h3 id="hvTitle"></h3><div style="font-size:.68em;color:rgba(255,255,255,.45);" id="hvNum"></div></div>
+          <button class="ha-btn" style="background:rgba(255,255,255,.1);color:#fff;font-size:.74em;" onclick="closeHin()">✕ Close</button>
+        </div>
+        <div class="hin-poem-text" id="hvText"></div>
+        <div class="hin-meaning" id="hvMeaning"></div>
+        <div class="hin-actions">
+          <button class="ha-btn" style="background:#e74c3c;color:#fff;" onclick="speakHin()">🔊 सुनें</button>
+          <button class="ha-btn" style="background:#3498db;color:#fff;" onclick="speakHinMeaning()">📖 Meaning</button>
+          <button class="ha-btn" style="background:#27ae60;color:#fff;" onclick="favHin()">❤️ Fav</button>
+        </div>
+        <div class="pn-row">
+          <button class="pn-btn" onclick="prevHin()">◀ Prev</button>
+          <button class="pn-btn" onclick="nextHin()">Next ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat -->
+    <div class="section" id="sec-chat">
+      <div class="sec-title">🤖 Talk to AI Buddy!</div>
+      <div class="chat-intro">👋 Hi! Ask me anything — animals, science, stories, or just say hello! 😊</div>
+      <div class="chat-msgs" id="chatMsgs"></div>
+      <div class="chat-row">
+        <input class="cinput" id="chatInput" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendChat()"/>
+        <button class="csend" onclick="sendChat()">🚀</button>
+      </div>
+    </div>
+
+    <!-- Streak -->
+    <div class="section" id="sec-streak">
+      <div class="sec-title">🔥 Daily Streak!</div>
+      <div class="str-panel">
+        <div class="str-head"><div class="str-fire">🔥</div><div class="str-info"><h3>Streak: <span id="strNum">0</span> days 🔥</h3><p id="strMsg">Come back every day!</p></div></div>
+        <div class="str-days" id="strDays"></div>
+        <div style="font-size:.74em;color:#abebc6;margin-bottom:6px;">Last 7 days</div>
+        <div class="milestones" id="milestones"></div>
+      </div>
+      <div style="background:rgba(255,255,255,.07);border-radius:15px;padding:12px;border:2px solid rgba(26,188,156,.3);">
+        <div style="font-size:.92em;color:#f9e79f;margin-bottom:8px;">📊 Your Stats</div>
+        <div class="stats-grid">
+          <div class="stat-box"><div class="stat-n" id="stDays">0</div><div class="stat-l">Total Days</div></div>
+          <div class="stat-box"><div class="stat-n" id="stBest">0</div><div class="stat-l">Best Streak</div></div>
+          <div class="stat-box"><div class="stat-n" id="stStars">0</div><div class="stat-l">Stars</div></div>
+          <div class="stat-box"><div class="stat-n" id="stScore">0</div><div class="stat-l">Score</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Settings -->
+<div class="modal-bg" id="settModal" onclick="closeSett(event)">
+  <div class="set-panel" onclick="event.stopPropagation()">
+    <div class="sp-handle"></div>
+    <div class="sp-ttl">⚙️ Settings</div>
+    <div class="set-row"><div class="sr-left"><div class="sri">🔊</div><div class="sri-info"><h4>Sound Effects</h4><p>Tones when tapping</p></div></div><div class="toggle on" id="sfxTog" onclick="toggleSFX()"></div></div>
+    <div class="set-row"><div class="sr-left"><div class="sri">🗣️</div><div class="sri-info"><h4>Voice Reading</h4><p>Read text aloud</p></div></div><div class="toggle on" id="voiceTog" onclick="toggleVoice()"></div></div>
+    <div class="set-row"><div class="sr-left"><div class="sri">🎵</div><div class="sri-info"><h4>Background Music</h4><p>Fun tune while playing</p></div></div><div class="toggle on" id="musicTog" onclick="toggleMusic()"></div></div>
+    <div class="set-row"><div class="sr-left"><div class="sri">🔈</div><div class="sri-info"><h4>Volume</h4><p>Adjust loudness</p></div></div><input class="vol-sl" id="volSl" type="range" min="0" max="1" step="0.1" value="1" oninput="setVol(this.value)"></div>
+    <div class="set-row"><div class="sr-left"><div class="sri">🏠</div><div class="sri-info"><h4>Home</h4><p>Return to main menu</p></div></div><button onclick="closeSett();goBackHome();" style="padding:5px 12px;background:#e74c3c;color:#fff;border:none;border-radius:11px;font-family:inherit;cursor:pointer;font-size:.8em;">Go Home</button></div>
+  </div>
+</div>
+
+<!-- Popup -->
+<div class="overlay" id="overlay" onclick="closePopup()"></div>
+<div class="popup" id="popup">
+  <div class="pop-em" id="popEm"></div>
+  <div class="pop-ti" id="popTi"></div>
+  <div class="pop-su" id="popSu"></div>
+  <button class="pop-ok" onclick="closePopup()">Awesome! 👍</button>
+</div>
+
+<script>
+/* ============================================================
+   UNIVERSAL AUDIO ENGINE
+   Uses Web Audio API (AudioContext) for ALL sounds — this
+   works identically on Desktop, iOS, Android, PWA, WebView.
+   No <audio> tags, no file dependencies.
+   SpeechSynthesis for voice with robust mobile fallbacks.
+============================================================ */
+
+let AC = null;               // AudioContext (lazy init)
+let sett = { sfx:true, voice:true, music:true, vol:1, muted:false };
+let audioUnlocked = false;
+
+// Unlock audio on first user gesture (required on iOS/Android)
+function unlockAudio() {
+  if (audioUnlocked) return;
+  audioUnlocked = true;
+  try {
+    if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+    if (AC.state === 'suspended') AC.resume();
+    // Tiny silent buffer — forces iOS to permit audio
+    const buf = AC.createBuffer(1, 1, 22050);
+    const src = AC.createBufferSource();
+    src.buffer = buf; src.connect(AC.destination); src.start(0);
+  } catch(e) {}
+  // Pre-load speech voices
+  if (window.speechSynthesis) {
+    window.speechSynthesis.getVoices();
+    window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+  }
+}
+
+// Always call this before any audio
+function ensureAC() {
+  if (!AC) { try { AC = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return false; } }
+  if (AC.state === 'suspended') { try { AC.resume(); } catch(e) {} }
+  return true;
+}
+
+// Core tone generator — works everywhere
+function tone(freq, dur, type='triangle', vol=0.22) {
+  if (sett.muted || !sett.sfx) return;
+  if (!ensureAC()) return;
+  try {
+    const osc = AC.createOscillator();
+    const gain = AC.createGain();
+    osc.connect(gain); gain.connect(AC.destination);
+    osc.type = type; osc.frequency.value = freq;
+    const v = vol * sett.vol;
+    gain.gain.setValueAtTime(v, AC.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, AC.currentTime + dur);
+    osc.start(AC.currentTime); osc.stop(AC.currentTime + dur);
+  } catch(e) {}
+}
+
+// Play sequence of [freq, duration] pairs
+function playSeq(notes, delay=0) {
+  if (sett.muted || !sett.sfx) return;
+  let t = delay;
+  notes.forEach(([f, d, tp]) => {
+    setTimeout(() => tone(f, d, tp||'triangle', 0.2), t * 1000);
+    t += d * 0.82;
+  });
+}
+
+// ---- Named sounds ----
+function sndClick()   { tone(480, 0.07, 'square', 0.13); }
+function sndSuccess() { playSeq([[523,.09],[659,.09],[784,.09],[1047,.22]]); }
+function sndWrong()   { playSeq([[300,.14],[240,.22]]); }
+function sndFanfare() { playSeq([[523,.1],[659,.1],[784,.1],[523,.1],[784,.28]]); }
+function sndLetter(i) { tone(260 + i*18, 0.13, 'triangle', 0.26); }
+function sndNumber(i) { tone(200 + i*28, 0.15, 'sine', 0.26); }
+function sndColor()   { tone(520, 0.1, 'sine', 0.2); }
+
+// Starting jingle — cheerful melody
+function playSong() {
+  if (sett.muted || !sett.music) return;
+  const m = [
+    [523,.18],[587,.18],[659,.18],[698,.18],[784,.32],
+    [784,.14],[698,.14],[659,.18],[587,.18],[523,.32],
+    [659,.18],[784,.18],[880,.32],[880,.14],[784,.14],
+    [698,.18],[659,.18],[523,.32],[784,.18],[1047,.45]
+  ];
+  playSeq(m, 0.1);
+}
+
+// ---- Voice TTS — robust cross-platform ----
+function speak(text, lang='en-US') {
+  if (sett.muted || !sett.voice) return;
+  if (!window.speechSynthesis) { tone(440,.08); return; }
+  try {
+    // Cancel any ongoing speech
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.lang = lang;
+    utt.rate = 0.84;
+    utt.pitch = 1.12;
+    utt.volume = sett.vol;
+    // Best voice selection for platform
+    const voices = window.speechSynthesis.getVoices();
+    const langCode = lang.split('-')[0];
+    const best =
+      voices.find(v => v.lang === lang && v.localService) ||
+      voices.find(v => v.lang.startsWith(langCode) && v.localService) ||
+      voices.find(v => v.lang === lang) ||
+      voices.find(v => v.lang.startsWith(langCode));
+    if (best) utt.voice = best;
+    // iOS fix: sometimes speech doesn't start; retry once
+    utt.onerror = () => {
+      try { window.speechSynthesis.cancel(); window.speechSynthesis.speak(utt); } catch(e) {}
+    };
+    window.speechSynthesis.speak(utt);
+  } catch(e) { tone(440,.08); }
+}
+
+// ---- Settings ----
+function toggleMute() {
+  unlockAudio();
+  sett.muted = !sett.muted;
+  const ic = sett.muted ? '🔇' : '🔊';
+  document.getElementById('muteHomeBtn').textContent = ic;
+  document.getElementById('muteAppBtn').textContent = ic;
+  if (sett.muted && window.speechSynthesis) window.speechSynthesis.cancel();
+  else sndClick();
+}
+function toggleSFX()   { sett.sfx   = !sett.sfx;   document.getElementById('sfxTog').className   = 'toggle '+(sett.sfx?'on':'');   sndClick(); }
+function toggleVoice() { sett.voice = !sett.voice; document.getElementById('voiceTog').className = 'toggle '+(sett.voice?'on':''); sndClick(); }
+function toggleMusic() { sett.music = !sett.music; document.getElementById('musicTog').className = 'toggle '+(sett.music?'on':''); sndClick(); }
+function setVol(v)     { sett.vol = parseFloat(v); }
+function openSettings(){ unlockAudio(); sndClick(); document.getElementById('settModal').classList.add('show'); }
+function closeSett(e)  { if(!e||e.target===document.getElementById('settModal')) document.getElementById('settModal').classList.remove('show'); }
+
+/* ============================================================
+   FLOATING CARTOON BACKGROUND
+============================================================ */
+const ctEmojis = [
+  '🐶','🐱','🐸','🐼','🦁','🐯','🐨','🐻','🦊','🐰',
+  '🐙','🦋','🐢','🦄','🐧','🐬','🦒','🐘','🦓','🦀',
+  '🌟','⭐','🌈','🎈','🎀','🎉','🎊','🍭','🍬','🌺',
+  '🚀','🛸','🌙','☀️','🌸','🎵','🎶','💫','✨','🎠'
+];
+function buildCartoons() {
+  const bg = document.getElementById('ctBg');
+  for (let i = 0; i < 28; i++) {
+    const el = document.createElement('div');
+    el.className = 'ct';
+    el.textContent = ctEmojis[Math.floor(Math.random() * ctEmojis.length)];
+    const left = Math.random() * 96;
+    const dur = 12 + Math.random() * 18;
+    const delay = -(Math.random() * dur);
+    const size = 1.4 + Math.random() * 1.6;
+    el.style.cssText = `left:${left}%;font-size:${size}em;animation-duration:${dur}s;animation-delay:${delay}s;`;
+    bg.appendChild(el);
+  }
+}
+
+/* ============================================================
+   SPLASH
+============================================================ */
+// Generate stars
+const spStars = document.getElementById('spStars');
+for (let i = 0; i < 90; i++) {
+  const s = document.createElement('div'); s.className = 'sp-star';
+  const sz = Math.random() * 2.5 + .5;
+  s.style.cssText = `width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;animation-delay:${Math.random()*3}s;animation-duration:${1.5+Math.random()*2}s;`;
+  spStars.appendChild(s);
+}
+
+const loadMsgs = ['Getting things ready...','Loading alphabets 🔤','Counting numbers 🔢','Loading poems 📜','Loading Hindi poems 🇮🇳','Preparing quiz 🧠','Mixing colors 🎨','Setting up streaks 🔥','Almost done! 🚀'];
+let pct = 0, msgIdx = 0;
+const fillEl = document.getElementById('loadFill');
+const pctEl  = document.getElementById('loadPct');
+const lblEl  = document.getElementById('loadLabel');
+
+// Attach unlock on play button
+document.getElementById('playBtn').addEventListener('pointerdown', unlockAudio, {once:true});
+document.getElementById('playBtn').addEventListener('touchstart',  unlockAudio, {passive:true,once:true});
+
+const loader = setInterval(() => {
+  pct += Math.random() * 13 + 3; if (pct > 100) pct = 100;
+  fillEl.style.width = pct + '%'; pctEl.textContent = Math.floor(pct) + '%';
+  const mi = Math.min(Math.floor((pct / 100) * loadMsgs.length), loadMsgs.length - 1);
+  if (mi !== msgIdx) { msgIdx = mi; lblEl.textContent = loadMsgs[mi]; }
+  if (pct >= 100) { clearInterval(loader); lblEl.textContent = 'Ready! 🎉'; document.getElementById('playBtn').style.display = 'block'; }
+}, 270);
+
+function onPlayBtn() {
+  unlockAudio();
+  sndClick();
+  const sp = document.getElementById('splash');
+  sp.style.transition = 'opacity .6s ease,transform .6s ease';
+  sp.style.opacity = '0'; sp.style.transform = 'scale(1.1)';
+  setTimeout(() => {
+    sp.style.display = 'none';
+    showHome();
+    initApp();
+    setTimeout(playSong, 300);
+    setTimeout(() => showPopup('🌟', 'Welcome, Superstar!', 'Choose what you want to learn today and earn stars! ⭐🏆'), 2000);
+  }, 600);
+}
+
+function showHome() {
+  const hs = document.getElementById('homeScreen');
+  hs.style.display = 'flex'; hs.style.opacity = '0'; hs.style.transition = 'opacity .4s';
+  setTimeout(() => hs.style.opacity = '1', 30);
+  updateHomeScore();
+}
+
+/* ============================================================
+   NAVIGATION
+============================================================ */
+let curSection = '';
+const secTitles = {abc:'🔤 Alphabets',num:'🔢 Numbers',poem:'📜 English Poems',quiz:'🧠 Quiz Time',colors:'🎨 Colors',hindi:'🇮🇳 Hindi Poems',chat:'🤖 AI Buddy',streak:'🔥 My Streak'};
+const encMsgs = {
+  abc:   ['Amazing! You know your letters! 🌟','You are a star learner! ⭐','Superb! Keep exploring! 🎉'],
+  num:   ['Wow! You can count! 🔢🌟','Super mathematician! 🏆','Numbers are your friends! ⭐'],
+  poem:  ['Beautiful! You love poems! 📜🌟','Amazing recitation! 🎉','Keep reading and growing! ⭐'],
+  quiz:  ['Brilliant! You are so clever! 🧠🏆','Keep going, champion! 🌟','Quiz master in the making! ⭐'],
+  colors:['You know your colors! 🎨🌟','Color master! 🌈🏆','So colorful and bright! ⭐'],
+  hindi: ['शाबाश! Great Hindi reading! 🇮🇳🌟','You are a Hindi star! ⭐','Wonderful! Keep reading! 🏆'],
+  chat:  ['Great question! 🤖⭐','You are so curious! 🌟','Keep asking and learning! 🏆'],
+  streak:['Keep your streak alive! 🔥🌟','Champion learner! 🏆','Come back tomorrow! ⭐']
+};
+
+function openSection(sec) {
+  unlockAudio(); sndFanfare();
+  curSection = sec;
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById('sec-' + sec).classList.add('active');
+  document.getElementById('appTitle').textContent = secTitles[sec] || 'Learning World';
+  document.getElementById('homeScreen').style.display = 'none';
+  const app = document.getElementById('app');
+  app.style.display = 'flex'; app.style.opacity = '0'; app.style.transition = 'opacity .35s';
+  setTimeout(() => app.style.opacity = '1', 30);
+  document.getElementById('content').scrollTop = 0;
+  if (sec === 'streak') renderStreak();
+  if (sec === 'hindi')  renderHinGrid();
+}
+
+function goBackHome() {
+  unlockAudio(); sndClick();
+  document.getElementById('app').style.display = 'none';
+  showHome();
+  if (curSection) {
+    const msgs = encMsgs[curSection] || ['Great job! Keep learning! 🌟'];
+    setTimeout(() => showPopup('🎉', 'Well Done!', msgs[Math.floor(Math.random() * msgs.length)]), 350);
+  }
+}
+
+/* ============================================================
+   SCORE
+============================================================ */
+let stars = 0, score = 0;
+function addScore(s, sc) {
+  stars += s; score += sc;
+  document.getElementById('starCount').textContent = stars;
+  document.getElementById('scoreCount').textContent = score;
+  updateHomeScore();
+}
+function updateHomeScore() {
+  document.getElementById('hStars').textContent = stars;
+  document.getElementById('hScore').textContent = score;
+  document.getElementById('hStreak').textContent = streakData.streak || 0;
+}
+
+/* ============================================================
+   POPUP
+============================================================ */
+function showPopup(em, ti, su) {
+  document.getElementById('popEm').textContent = em;
+  document.getElementById('popTi').textContent = ti;
+  document.getElementById('popSu').textContent = su;
+  document.getElementById('popup').classList.add('show');
+  document.getElementById('overlay').classList.add('show');
+  sndSuccess();
+}
+function closePopup() {
+  document.getElementById('popup').classList.remove('show');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+/* ============================================================
+   ALPHABET
+============================================================ */
+const alphaData = [
+  ['A','Apple','🍎'],['B','Ball','⚽'],['C','Cat','🐱'],['D','Dog','🐶'],
+  ['E','Elephant','🐘'],['F','Fish','🐟'],['G','Grapes','🍇'],['H','Hat','🎩'],
+  ['I','Ice Cream','🍦'],['J','Juice','🧃'],['K','Kite','🪁'],['L','Lion','🦁'],
+  ['M','Moon','🌙'],['N','Nest','🪺'],['O','Orange','🍊'],['P','Penguin','🐧'],
+  ['Q','Queen','👑'],['R','Rainbow','🌈'],['S','Sun','☀️'],['T','Tree','🌳'],
+  ['U','Umbrella','☂️'],['V','Violin','🎻'],['W','Whale','🐳'],['X','Xylophone','🎵'],
+  ['Y','Yacht','⛵'],['Z','Zebra','🦓']
+];
+
+function buildABC() {
+  const g = document.getElementById('abcGrid');
+  alphaData.forEach(([l, w, e], i) => {
+    const c = document.createElement('div'); c.className = 'lcard';
+    c.innerHTML = `<div class="bl">${l}</div><div class="le">${e}</div><div class="lw">${w}</div>`;
+    c.onclick = () => {
+      unlockAudio();
+      sndLetter(i);
+      // Speak with slight delay so tone plays first
+      setTimeout(() => speak(`${l}... ${l} is for ${w}`), 180);
+      addScore(0, 5);
+      document.getElementById('encAbc').textContent = `🌟 ${l} is for ${w}! ${e} Great job!`;
+      showPopup(e, `${l} is for ${w}!`, `You tapped ${l}! Amazing! 🌟`);
+    };
+    g.appendChild(c);
+  });
+}
+
+/* ============================================================
+   NUMBERS
+============================================================ */
+const numWords = ['Zero','One','Two','Three','Four','Five','Six','Seven','Eight','Nine','Ten',
+  'Eleven','Twelve','Thirteen','Fourteen','Fifteen','Sixteen','Seventeen','Eighteen','Nineteen','Twenty'];
+const numEmoji = ['0️⃣','1️⃣','2️⃣','3️⃣','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟',
+  '1️⃣1️⃣','1️⃣2️⃣','1️⃣3️⃣','1️⃣4️⃣','1️⃣5️⃣','1️⃣6️⃣','1️⃣7️⃣','1️⃣8️⃣','1️⃣9️⃣','2️⃣0️⃣'];
+
+function buildNumbers() {
+  const g = document.getElementById('numGrid');
+  for (let i = 0; i <= 20; i++) {
+    const c = document.createElement('div'); c.className = 'ncard';
+    const dots = i <= 10 ? (i === 0 ? '·' : '⭐'.repeat(i)) : numEmoji[i];
+    c.innerHTML = `<div class="bn">${i}</div><div class="nd">${dots}</div><div class="nw">${numWords[i]}</div>`;
+    c.onclick = () => {
+      unlockAudio();
+      sndNumber(i);
+      setTimeout(() => speak(`${i}. ${numWords[i]}`), 180);
+      addScore(0, 5);
+      showPopup(numEmoji[i] || '🔢', `${i} — ${numWords[i]}`, `You know your numbers! 🌟`);
+    };
+    g.appendChild(c);
+  }
+}
+
+/* ============================================================
+   ENGLISH POEMS
+============================================================ */
+const engPoems = [
+  { title:'Twinkle Twinkle', text:`Twinkle, twinkle, little star,\nHow I wonder what you are!\nUp above the world so high,\nLike a diamond in the sky.` },
+  { title:'Jack and Jill', text:`Jack and Jill went up the hill\nTo fetch a pail of water.\nJack fell down and broke his crown,\nAnd Jill came tumbling after.` },
+  { title:'Humpty Dumpty', text:`Humpty Dumpty sat on a wall,\nHumpty Dumpty had a great fall.\nAll the king's horses and all the king's men\nCouldn't put Humpty together again!` },
+  { title:'Baa Baa Black Sheep', text:`Baa, baa, black sheep,\nHave you any wool?\nYes sir, yes sir, three bags full!\nOne for the master, one for the dame,\nAnd one for the little boy who lives down the lane.` },
+  { title:'ABC Song', text:`A B C D E F G,\nH I J K L M N O P,\nQ R S, T U V,\nW X, Y and Z!\nNow I know my ABCs,\nNext time won't you sing with me?` },
+  { title:'Mary Had a Lamb', text:`Mary had a little lamb,\nIts fleece was white as snow.\nAnd everywhere that Mary went,\nThe lamb was sure to go!` }
+];
+let curPoem = 0;
+function buildPoems() {
+  const sel = document.getElementById('poemSel');
+  engPoems.forEach((p, i) => {
+    const b = document.createElement('button'); b.className = 'pbtn' + (i === 0 ? ' active' : ''); b.textContent = p.title;
+    b.onclick = () => {
+      unlockAudio(); sndClick();
+      document.querySelectorAll('.pbtn').forEach(x => x.classList.remove('active')); b.classList.add('active');
+      curPoem = i;
+      document.getElementById('poemTitle').textContent = p.title;
+      document.getElementById('poemText').textContent = p.text;
+      addScore(1, 10);
+    };
+    sel.appendChild(b);
+  });
+  document.getElementById('poemTitle').textContent = engPoems[0].title;
+  document.getElementById('poemText').textContent = engPoems[0].text;
+}
+function speakPoem() { unlockAudio(); speak(engPoems[curPoem].text); addScore(1, 10); }
+
+/* ============================================================
+   QUIZ
+============================================================ */
+const quizData = [
+  { q:'What letter does 🍎 Apple start with?', opts:['A','B','C','D'], ans:0 },
+  { q:'How many legs does a dog 🐶 have?', opts:['2','4','6','8'], ans:1 },
+  { q:'What comes after the number 7?', opts:['6','9','8','10'], ans:2 },
+  { q:'Which color is the sky on a sunny day? ☀️', opts:['Red','Green','Blue','Yellow'], ans:2 },
+  { q:'What letter does 🌙 Moon start with?', opts:['N','M','L','P'], ans:1 },
+  { q:'How many days are in a week?', opts:['5','6','8','7'], ans:3 },
+  { q:'What sound does a cat 🐱 make?', opts:['Woof','Moo','Meow','Baa'], ans:2 },
+  { q:'What letter does 🐟 Fish start with?', opts:['G','E','F','H'], ans:2 },
+  { q:'Which number is the biggest?', opts:['5','12','9','7'], ans:1 },
+  { q:'What color is grass 🌿?', opts:['Blue','Red','Green','Purple'], ans:2 },
+  { q:'What letter does 🌈 Rainbow start with?', opts:['S','R','T','W'], ans:1 },
+  { q:'How many months in a year?', opts:['10','11','13','12'], ans:3 },
+  { q:'Which animal says Moo? 🐄', opts:['Pig','Sheep','Cow','Horse'], ans:2 },
+  { q:'What letter does 🐘 Elephant start with?', opts:['A','E','I','O'], ans:1 },
+  { q:'What is 3 + 4?', opts:['6','8','7','9'], ans:2 }
+];
+let qIdx = -1, answered = false;
+function nextQ() {
+  unlockAudio(); sndClick(); answered = false;
+  qIdx = (qIdx + 1) % quizData.length;
+  const q = quizData[qIdx];
+  document.getElementById('quizQ').textContent = q.q;
+  document.getElementById('quizFb').textContent = '';
+  const opts = document.getElementById('quizOpts'); opts.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const b = document.createElement('button'); b.className = 'qopt'; b.textContent = o;
+    b.onclick = () => checkAns(i, q.ans, q.opts[q.ans]);
+    opts.appendChild(b);
+  });
+  setTimeout(() => speak(q.q), 200);
+}
+function checkAns(sel, ans, ct) {
+  if (answered) return; answered = true;
+  unlockAudio();
+  const btns = document.querySelectorAll('.qopt');
+  btns[ans].classList.add('correct');
+  if (sel === ans) {
+    btns[sel].classList.add('correct');
+    document.getElementById('quizFb').textContent = '🎉 Correct! You are so smart!';
+    setTimeout(() => speak('Correct! Well done, you are so smart!'), 100);
+    addScore(2, 20); sndSuccess();
+  } else {
+    btns[sel].classList.add('wrong');
+    document.getElementById('quizFb').textContent = `❌ The answer is ${ct}. Try again!`;
+    setTimeout(() => speak(`The correct answer is ${ct}`), 100);
+    sndWrong();
+  }
+}
+
+/* ============================================================
+   COLORS
+============================================================ */
+const colorsData = [
+  {name:'Red',hex:'#e74c3c',bg:'#c0392b'},{name:'Blue',hex:'#3498db',bg:'#2980b9'},
+  {name:'Green',hex:'#2ecc71',bg:'#27ae60'},{name:'Yellow',hex:'#f1c40f',bg:'#f39c12'},
+  {name:'Purple',hex:'#9b59b6',bg:'#8e44ad'},{name:'Orange',hex:'#e67e22',bg:'#d35400'},
+  {name:'Pink',hex:'#ff69b4',bg:'#c0392b'},{name:'Brown',hex:'#a04000',bg:'#784212'},
+  {name:'Black',hex:'#2c3e50',bg:'#1a252f'},{name:'White',hex:'#ecf0f1',bg:'#bdc3c7'},
+  {name:'Gray',hex:'#95a5a6',bg:'#7f8c8d'},{name:'Cyan',hex:'#1abc9c',bg:'#17a589'}
+];
+function buildColors() {
+  const g = document.getElementById('colGrid');
+  colorsData.forEach(c => {
+    const card = document.createElement('div'); card.className = 'ccard';
+    card.style.background = `linear-gradient(135deg,${c.hex},${c.bg})`;
+    card.innerHTML = `<div class="cc-circle" style="background:${c.hex}"></div><div class="cc-name">${c.name}</div>`;
+    card.onclick = () => {
+      unlockAudio(); sndColor();
+      setTimeout(() => speak(`This color is ${c.name}`), 120);
+      addScore(0, 5);
+      showPopup('🎨', `This is ${c.name}!`, `${c.name} is so beautiful! 🌈`);
+    };
+    g.appendChild(card);
+  });
+}
+
+/* ============================================================
+   HINDI POEMS — 15 POEMS FOR KIDS (Simple & Fun)
+============================================================ */
+const hindiPoems = [
+  {
+    id:1, title:'आम',
+    text:'आम है फलों का राजा,\nखाने में लगता बड़ा मजा।\nपीला-लाल रंग सुनहरा,\nस्वाद है इसका बेहरा।',
+    meaning:'Mango is the king of fruits. It is very tasty to eat. Its color is yellow and red golden. Its taste is very unique.',
+    emoji:'🥭'
+  },
+  {
+    id:2, title:'सूरज',
+    text:'सूरज निकला सुबह सवेरे,\nलाया रोशनी अपने डेरे।\nधरती खिली, आकाश जागा,\nहर प्राणी अपने काम को भागा।',
+    meaning:'The sun rose in the early morning bringing its light. The earth bloomed and the sky awakened. Every creature rushed to its work.',
+    emoji:'☀️'
+  },
+  {
+    id:3, title:'बिल्ली',
+    text:'मेरी बिल्ली म्याऊँ करे,\nदूध की कटोरी चाट करे।\nखेल-कूद में मस्त रहे,\nघर में आनंद से बस्त रहे।',
+    meaning:'My cat says meow and licks the bowl of milk. She remains happy playing and jumping and lives joyfully in the house.',
+    emoji:'🐱'
+  },
+  {
+    id:4, title:'चाँद',
+    text:'चाँद चमकता रात को आता,\nतारों संग मिल गाता।\nरोशनी से रात सजाता,\nसबके मन को भाता।',
+    meaning:'The moon comes shining at night and sings with the stars. It decorates the night with light and pleases everyone\'s heart.',
+    emoji:'🌙'
+  },
+  {
+    id:5, title:'तितली',
+    text:'तितली रानी आई उड़ के,\nरंग-बिरंगी पंख लेके।\nफूलों पर मंडराती है,\nहमें खुशी दे जाती है।',
+    meaning:'Butterfly queen came flying with colorful wings. She hovers over flowers and gives us happiness.',
+    emoji:'🦋'
+  },
+  {
+    id:6, title:'माँ',
+    text:'माँ मेरी सबसे प्यारी,\nजीवन की है वो क्यारी।\nखाना खिलाए, लोरी सुनाए,\nदुख में हमें गले लगाए।',
+    meaning:'My mother is the most beloved. She feeds food, sings lullaby, and hugs us in sorrow. She is the garden of my life.',
+    emoji:'👩‍👧'
+  },
+  {
+    id:7, title:'हाथी',
+    text:'हाथी राजा जंगल का,\nसूंड है उसका ढोल का।\nपानी में खेलता है,\nसब का मन रखता है।',
+    meaning:'Elephant is the king of jungle. His trunk is like a drum. He plays in water and keeps everyone happy.',
+    emoji:'🐘'
+  },
+  {
+    id:8, title:'बारिश',
+    text:'बारिश आई छम-छम करके,\nधरती भीगी रिमझिम करके।\nमेंढक टर्राए खुश होके,\nबच्चे खेलें भीगे होके।',
+    meaning:'Rain came pat-pat, earth got wet drop by drop. Frogs croaked happily, children played getting wet.',
+    emoji:'🌧️'
+  },
+  {
+    id:9, title:'मोर',
+    text:'मोर नाचे बरसात में,\nपंख फैलाए जज्बात में।\nरंग-बिरंगे पंख उसके,\nसबका मन चुरा ले।',
+    meaning:'Peacock dances in the rain spreading its wings with emotions. Its colorful feathers steal everyone\'s heart.',
+    emoji:'🦚'
+  },
+  {
+    id:10, title:'गाय',
+    text:'गाय हमारी माँ समान,\nदूध देती सब को दान।\nहरी घास खाती है,\nघर में खुशी लाती है।',
+    meaning:'Cow is like our mother. She donates milk to all, eats green grass and brings happiness home.',
+    emoji:'🐄'
+  },
+  {
+    id:11, title:'पेड़',
+    text:'पेड़ हमें छाया देते,\nफल-फूल सब कुछ देते।\nवर्षा भी लाते हैं,\nजीवन को बचाते हैं।',
+    meaning:'Trees give us shade and provide fruits and flowers. They also bring rain and save our lives.',
+    emoji:'🌳'
+  },
+  {
+    id:12, title:'चिड़िया',
+    text:'चिड़िया चहचहाती सुबह,\nउड़ती आसमान में अदभुत।\nनीड़ में रहते बच्चे उसके,\nप्यार से रखती है वो उन्हें।',
+    meaning:'The bird chirps in the morning and flies wonderfully in the sky. Her babies stay in the nest, she keeps them with love.',
+    emoji:'🐦'
+  },
+  {
+    id:13, title:'मछली',
+    text:'मछली पानी की रानी है,\nजीवन उसका पानी है।\nतैरती रहती हर पल,\nसुंदर है उसका हर क्षण।',
+    meaning:'Fish is the queen of water. Water is her life. She swims every moment beautifully.',
+    emoji:'🐟'
+  },
+  {
+    id:14, title:'फूल',
+    text:'फूल खिले हैं बाग में,\nखुशबू फैली राग में।\nलाल पीले नीले गुलाब,\nदेखो कितने हैं नवाब।',
+    meaning:'Flowers have bloomed in the garden and fragrance has spread everywhere. Red, yellow, blue roses — see how royal they look.',
+    emoji:'🌸'
+  },
+  {
+    id:15, title:'विद्यालय',
+    text:'विद्यालय है ज्ञान का मंदिर,\nपढ़ते हैं यहाँ बच्चे मिलकर।\nगुरु हमें ज्ञान सिखाते,\nजीवन को सफल बनाते।',
+    meaning:'School is the temple of knowledge, children study here together. Teachers teach us knowledge and make our life successful.',
+    emoji:'🏫'
+  }
+];
+let hinIdx = 0, hinFavs = new Set();
+
+function renderHinGrid() {
+  const g = document.getElementById('hinGrid'); g.innerHTML = '';
+  hindiPoems.forEach((p, i) => {
+    const c = document.createElement('div'); c.className = 'hpcard';
+    c.innerHTML = `<div class="hpcard-num">#${p.id} ${p.emoji}</div><div class="hpcard-title">${p.title}</div><span class="hpcard-badge">🌱 Kids</span>${hinFavs.has(p.id)?'<div style="font-size:.7em;margin-top:2px;">❤️</div>':''}`;
+    c.onclick = () => openHin(i);
+    g.appendChild(c);
+  });
+}
+function openHin(i) {
+  hinIdx = i; const p = hindiPoems[i];
+  document.getElementById('hvTitle').textContent = p.emoji + ' ' + p.title;
+  document.getElementById('hvNum').textContent = `Poem #${p.id} of 15`;
+  document.getElementById('hvText').textContent = p.text;
+  document.getElementById('hvMeaning').innerHTML = `<strong>📖 English Meaning:</strong><br>${p.meaning}`;
+  document.getElementById('hinView').style.display = 'block';
+  document.getElementById('hinGrid').style.display = 'none';
+  document.getElementById('content').scrollTop = 0;
+  addScore(1, 10); sndFanfare();
+}
+function closeHin() {
+  document.getElementById('hinView').style.display = 'none';
+  document.getElementById('hinGrid').style.display = 'grid';
+}
+function prevHin() { if (hinIdx > 0) openHin(hinIdx - 1); else showPopup('🌟','First Poem!','This is the first poem! 🎉'); }
+function nextHin() { if (hinIdx < hindiPoems.length - 1) openHin(hinIdx + 1); else showPopup('🏆','All Done!','You read all 15 Hindi poems! शाबाश! 🌟'); }
+function speakHin() { unlockAudio(); speak(hindiPoems[hinIdx].text, 'hi-IN'); addScore(0, 5); }
+function speakHinMeaning() { unlockAudio(); speak(hindiPoems[hinIdx].meaning, 'en-US'); addScore(0, 3); }
+function favHin() {
+  const p = hindiPoems[hinIdx];
+  if (hinFavs.has(p.id)) { hinFavs.delete(p.id); showPopup('💔','Removed',`"${p.title}" removed from favourites.`); }
+  else { hinFavs.add(p.id); addScore(1,5); showPopup('❤️','Favourite!',`"${p.title}" added to favourites! 🌟`); }
+  renderHinGrid();
+}
+
+/* ============================================================
+   CHAT
+============================================================ */
+const AI_SYS = `You are a friendly AI learning buddy for children aged 5-12. Help kids learn about alphabets, numbers, animals, science, nature, stories and anything they are curious about. Keep every answer short (2-3 sentences), fun, simple and child-friendly. Use emojis. Always be positive, encouraging and kind.`;
+const chatEl = document.getElementById('chatMsgs');
+function addMsg(role, text) {
+  const d = document.createElement('div'); d.className = 'msg ' + role;
+  d.innerHTML = `<div class="mavatar">${role==='ai'?'🤖':'🧒'}</div><div class="mbubble">${text}</div>`;
+  chatEl.appendChild(d); chatEl.scrollTop = chatEl.scrollHeight;
+}
+async function sendChat() {
+  unlockAudio(); sndClick();
+  const inp = document.getElementById('chatInput');
+  const msg = inp.value.trim(); if (!msg) return;
+  inp.value = ''; addMsg('user', msg); addScore(0, 5);
+  const t = document.createElement('div'); t.className = 'msg ai';
+  t.innerHTML = `<div class="mavatar">🤖</div><div class="mbubble" style="font-style:italic;color:#abebc6">Thinking... 💭</div>`;
+  chatEl.appendChild(t); chatEl.scrollTop = chatEl.scrollHeight;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ model:'claude-sonnet-4-6', max_tokens:1000, system:AI_SYS, messages:[{role:'user',content:msg}] })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Hmm, try again! 😊';
+    t.remove(); addMsg('ai', reply);
+    setTimeout(() => speak(reply.replace(/[\u{1F000}-\u{1FFFF}]/gu, '')), 200);
+    addScore(1, 10);
+  } catch(e) { t.remove(); addMsg('ai','Oops! Please try again! 😊'); }
+}
+
+/* ============================================================
+   STREAK
+============================================================ */
+let streakData = { streak:0, bestStreak:0, lastDate:'', activeDays:[] };
+const storeDB = {};
+function sGet(k,def) { try { const v=storeDB[k]; return v!==undefined?JSON.parse(v):def; } catch{return def;} }
+function sSet(k,v)   { storeDB[k]=JSON.stringify(v); }
+function todayStr()  { const d=new Date(); return `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`; }
+
+function initStreak() {
+  const saved = sGet('sd', null); if (saved) streakData = saved;
+  const today = todayStr();
+  if (streakData.lastDate !== today) {
+    const yd = new Date(); yd.setDate(yd.getDate() - 1);
+    const yds = `${yd.getFullYear()}-${yd.getMonth()+1}-${yd.getDate()}`;
+    if (streakData.lastDate === yds) streakData.streak++;
+    else if (streakData.lastDate !== today) streakData.streak = 1;
+    streakData.lastDate = today;
+    if (!streakData.activeDays) streakData.activeDays = [];
+    if (!streakData.activeDays.includes(today)) streakData.activeDays.push(today);
+    if (streakData.streak > streakData.bestStreak) streakData.bestStreak = streakData.streak;
+    sSet('sd', streakData);
+  }
+}
+function renderStreak() {
+  document.getElementById('strNum').textContent = streakData.streak;
+  document.getElementById('strMsg').textContent =
+    streakData.streak >= 7 ? '🏆 On fire! Keep going champion!' :
+    streakData.streak >= 3 ? '🌟 Amazing! Come back tomorrow!' :
+    streakData.streak >= 1 ? '🎉 Great start! Come back tomorrow!' :
+    'Start today and build your streak! 💪';
+  const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const dEl = document.getElementById('strDays'); dEl.innerHTML = '';
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const ds = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
+    const isToday = i === 0, done = (streakData.activeDays||[]).includes(ds);
+    const div = document.createElement('div'); div.className = 'str-day';
+    div.innerHTML = `<div class="sdc ${done?'done':''} ${isToday&&!done?'today':''}">${done?'✅':isToday?'📅':'·'}</div><div class="sdl">${days[d.getDay()]}</div>`;
+    dEl.appendChild(div);
+  }
+  const milestones = [{n:1,e:'🌱',l:'1 Day'},{n:3,e:'⚡',l:'3 Days'},{n:7,e:'🌟',l:'1 Week'},{n:14,e:'🏅',l:'2 Weeks'},{n:30,e:'🏆',l:'30 Days'}];
+  const mEl = document.getElementById('milestones'); mEl.innerHTML = '';
+  milestones.forEach(m => {
+    const div = document.createElement('div'); div.className = 'ms ' + (streakData.bestStreak >= m.n ? 'earned' : 'locked');
+    div.innerHTML = `${m.e} ${m.l} ${streakData.bestStreak >= m.n ? '✓' : '🔒'}`;
+    mEl.appendChild(div);
+  });
+  document.getElementById('stDays').textContent  = (streakData.activeDays||[]).length;
+  document.getElementById('stBest').textContent  = streakData.bestStreak || 0;
+  document.getElementById('stStars').textContent = stars;
+  document.getElementById('stScore').textContent = score;
+}
+
+/* ============================================================
+   INIT
+============================================================ */
+function initApp() {
+  buildCartoons();
+  buildABC();
+  buildNumbers();
+  buildPoems();
+  buildColors();
+  renderHinGrid();
+  nextQ();
+  initStreak();
+  updateHomeScore();
+}
+
+// Also add event listeners to ensure audio unlock on any touch/click
+document.addEventListener('pointerdown', unlockAudio, { once: true });
+document.addEventListener('touchstart',  unlockAudio, { passive: true, once: true });
+</script>
+</body>
+</html>
